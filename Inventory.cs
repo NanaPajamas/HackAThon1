@@ -1,24 +1,30 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance;
+
     public List<Item> items;
-    public Item cane;
+    public Item startItem;
     private Item selectedItem;
 
     [Header("Inventory Controls")]
     public KeyCode nextItemKey;
     public KeyCode prevItemKey;
 
+    void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (cane != null)
+        if (startItem != null)
         {
-            items.Add(cane);
-            selectedItem = cane;            
+            items.Add(startItem);
+            selectedItem = startItem;
         }
     }
 
@@ -55,5 +61,10 @@ public class Inventory : MonoBehaviour
             if (prevItem != null)
                 selectedItem = prevItem;
         }
+    }
+
+    public Item GetSelectedItem()
+    {
+        return selectedItem;
     }
 }

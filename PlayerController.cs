@@ -1,4 +1,8 @@
-  private float horizontalInput;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    private float horizontalInput;
     private float verticalInput;
     public CharacterController controller;
     public float speed = 10f;
@@ -10,8 +14,6 @@
     public float jumpHeight = 3f;
     private Vector3 velocity;
     private bool isGrounded;
-    public GameObject projectilePrefab;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     // Update is called once per frame
     void Update()
@@ -42,7 +44,7 @@
         }
 
         Vector3 move = transform.right * horizontalInput + transform.forward * verticalInput;
-        controller.Move(move * Time.deltaTime * moveSpeed);
+        controller.Move(moveSpeed * Time.deltaTime * move);
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -55,6 +57,14 @@
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            Instantiate(projectilePrefab, transform.position, projectilePrefab.transform.rotation);
+            FireWeapon();
         }
     }
+
+    private void FireWeapon()
+    {
+        Item selectedItem = Inventory.Instance.GetSelectedItem();
+        Instantiate(selectedItem.projectile, transform.position, selectedItem.projectile.transform.rotation);
+    }
+}
+    

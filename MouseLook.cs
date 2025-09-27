@@ -1,4 +1,8 @@
- private float mouseX;
+
+using UnityEngine;
+
+public class MouseLook : MonoBehaviour {
+    private float mouseX;
     private float mouseY;
     public float mouseSens = 90f;
     private float xRotation = 0f; //this is the rotation for the x-axis that will move the mouse up and down
@@ -6,7 +10,9 @@
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked; //gets rid of the cursor and locks in the middle of the screen
+        //gets rid of the cursor and locks in the middle of the screen
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked; 
     }
 
     // Update is called once per frame
@@ -26,4 +32,4 @@
         //move the PLAYER BODY moves left and right. Do this to match the camera wth the player
         playerBody.Rotate(Vector3.up * mouseX); //that's why we make a reference.
     }
-
+}
