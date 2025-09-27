@@ -13,6 +13,8 @@ public class Item : ScriptableObject
     [Header("For Ranged")]
     public GameObject projectile;
     public float fireRate;
+    public int magazineSize;
+    public float reloadTime;
 }
 
 public enum WeaponType
