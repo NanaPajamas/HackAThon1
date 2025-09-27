@@ -4,6 +4,7 @@ using UnityEngine;
 public class Item : ScriptableObject
 {
     public Sprite icon;
+    public GameObject equippedPrefab;
     public float damage;
     public WeaponType weaponType;
 
