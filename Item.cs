@@ -3,10 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item/Item")]
 public class Item : ScriptableObject
 {
-    public Sprite icon;
     public GameObject equippedPrefab;
     public float damage;
     public WeaponType weaponType;
+
+    public Sprite[] attackStates;
 
     [Header("For Melee")]
     public float attackCooldown;

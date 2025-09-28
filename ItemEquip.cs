@@ -8,7 +8,7 @@ public class ItemEquip : MonoBehaviour
     public void EquipItem(Item item)
     {
         if (currentEquippedItem != null)
-            Destroy(currentEquippedItem);
+            DestroyImmediate(currentEquippedItem);
 
         if (item != null && item.equippedPrefab != null)
         {
@@ -17,4 +17,9 @@ public class ItemEquip : MonoBehaviour
             equippedItemTransform.localPosition = new Vector3(0, 0, 0);            
         }
     }
+
+    public GameObject GetEquippedItem()
+    {
+        return currentEquippedItem;
+    } 
 }

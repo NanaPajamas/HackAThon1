@@ -1,13 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
     public static Inventory Instance;
 
     public List<Item> items;
-    public Item startItem;
+    public Item[] startItems;
     private Item selectedItem;
+    public ItemEquip itemEquip;
+
+    public RectTransform[] itemSlots;
 
     [Header("Inventory Controls")]
     public KeyCode nextItemKey;
@@ -21,11 +25,13 @@ public class Inventory : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (startItem != null)
+        foreach (Item startItem in startItems)
         {
-            items.Add(startItem);
-            selectedItem = startItem;
+            if (startItem != null)
+                AddItem(startItem);
         }
+
+        SetSelectedItem(items[0]);
     }
 
     // Update is called once per frame
@@ -35,6 +41,17 @@ public class Inventory : MonoBehaviour
             SwitchItem(true);
         else if (Input.GetKeyDown(prevItemKey))
             SwitchItem(false);
+    }
+
+    private void AddItem(Item item)
+    {
+        items.Add(item);
+
+        int index = items.IndexOf(item);
+        RectTransform itemSlot = itemSlots[index];
+
+        Image itemImage = itemSlot.GetComponentInChildren<Image>();
+        itemImage.gameObject.SetActive(true);
     }
 
     private void SwitchItem(bool next)
@@ -49,7 +66,7 @@ public class Inventory : MonoBehaviour
 
             Item nextItem = items[nextIndex];
             if (nextItem != null)
-                selectedItem = nextItem;
+                SetSelectedItem(nextItem);
         }
         else
         {
@@ -59,12 +76,35 @@ public class Inventory : MonoBehaviour
 
             Item prevItem = items[prevIndex];
             if (prevItem != null)
-                selectedItem = prevItem;
+                SetSelectedItem(prevItem);
         }
     }
 
     public Item GetSelectedItem()
     {
         return selectedItem;
+    }
+
+    private void SetSelectedItem(Item item)
+    {
+        selectedItem = item;
+        int index = items.IndexOf(selectedItem);
+
+        RectTransform slotTransform = itemSlots[index];
+        SelectableImage selectableImage = slotTransform.GetComponentInChildren<SelectableImage>();
+        selectableImage.Select();
+
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (i != index)
+            {
+                RectTransform otherTransform = itemSlots[i];
+                SelectableImage otherSelectableImage = otherTransform.GetComponentInChildren<SelectableImage>();
+                otherSelectableImage.Deselect();
+            }
+        }
+
+        if (itemEquip != null)
+            itemEquip.EquipItem(selectedItem);
     }
 }
